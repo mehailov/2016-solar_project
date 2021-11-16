@@ -25,6 +25,8 @@ time_step = None
 space_objects = []
 """Список космических объектов."""
 
+log_filename = None
+"""Имя файла для сохранения статистики"""
 
 def execution():
     """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
@@ -34,7 +36,10 @@ def execution():
     """
     global physical_time
     global displayed_time
+    global log_filename
+
     recalculate_space_objects_positions(space_objects, time_step.get())
+    log_space_object_positions_to_file(log_filename, space_objects)
     for body in space_objects:
         update_object_position(space, body)
     physical_time += time_step.get()
@@ -56,7 +61,6 @@ def start_execution():
     execution()
     print('Started execution...')
 
-
 def stop_execution():
     """Обработчик события нажатия на кнопку Start.
     Останавливает циклическое исполнение функции execution.
@@ -75,11 +79,16 @@ def open_file_dialog():
     """
     global space_objects
     global perform_execution
+    global log_filename
+
     perform_execution = False
     for obj in space_objects:
         space.delete(obj.image)  # удаление старых изображений планет
     in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
     space_objects = read_space_objects_data_from_file(in_filename)
+    log_filename = str(in_filename[:in_filename.find('.')]) + '_log.txt'
+    with open(log_filename, 'w') as log:
+        log.write('')
     max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
     calculate_scale_factor(max_distance)
 
