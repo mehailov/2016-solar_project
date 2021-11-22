@@ -37,6 +37,7 @@ def execution():
     global physical_time
     global displayed_time
     global log_filename
+    global space
 
     recalculate_space_objects_positions(space_objects, time_step.get())
     log_space_object_positions_to_file(log_filename, space_objects)
@@ -125,6 +126,7 @@ def main():
     physical_time = 0
 
     root = tkinter.Tk()
+    root.title('Solar system modelling')
     # космическое пространство отображается на холсте типа Canvas
     space = tkinter.Canvas(root, width=window_width, height=window_height, bg="black")
     space.pack(side=tkinter.TOP)
@@ -136,11 +138,12 @@ def main():
     start_button.pack(side=tkinter.LEFT)
 
     time_step = tkinter.DoubleVar()
-    time_step.set(1)
+    time_step.set(10e3)
     time_step_entry = tkinter.Entry(frame, textvariable=time_step)
     time_step_entry.pack(side=tkinter.LEFT)
 
     time_speed = tkinter.DoubleVar()
+    #time_speed.set(10)
     scale = tkinter.Scale(frame, variable=time_speed, orient=tkinter.HORIZONTAL)
     scale.pack(side=tkinter.LEFT)
 
@@ -150,9 +153,10 @@ def main():
     save_file_button.pack(side=tkinter.LEFT)
 
     displayed_time = tkinter.StringVar()
-    displayed_time.set(str(physical_time) + " seconds gone")
+    displayed_time.set(str(physical_time) + " seconds passed")
     time_label = tkinter.Label(frame, textvariable=displayed_time, width=30)
     time_label.pack(side=tkinter.RIGHT)
+
 
     root.mainloop()
     print('Modelling finished!')
