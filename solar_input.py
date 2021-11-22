@@ -13,9 +13,9 @@ def read_space_objects_data_from_file(input_filename):
     """
 
     objects = []
-    with open(input_filename, 'r') as input_file:
+    with open(input_filename, 'r', encoding='utf-8') as input_file:
         for line in input_file.readlines():
-            if len(line.strip()) == 0 or line[0] == '#':
+            if len(line) == 0 or line[0] == '#':
                 continue  # пустые строки и строки-комментарии пропускаем
             object_type = line.split()[0].lower()
             if object_type == "star": 
