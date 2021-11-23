@@ -20,6 +20,9 @@ scale_factor = None
 Тип: float
 Мера: количество пикселей на один метр."""
 
+colors = ["red", "lightcoral", "pink", "floralwhite"]
+"""Пул цветов звезды, для обеспечивания мигания"""
+
 
 def calculate_scale_factor(max_distance):
     """Вычисляет значение глобальной переменной **scale_factor** по данной характерной длине"""
@@ -110,6 +113,14 @@ def update_object_position(space, body):
     y = scale_y(body.y)
     #print(x, y)
     r = body.R
+    if body.type == 'star':
+        if body.color == "red" or body.color == "lightcoral" or body.color == "pink" or body.color == "floralwhite":
+            space.itemconfig(body.image, fill=body.color)
+            if body.c_ph == 3:
+                body.c_ph = 0
+            else:
+                body.c_ph += 1
+            body.color = colors[body.c_ph]
     if x + r < 0 or x - r > window_width or y + r < 0 or y - r > window_height:
         space.coords(body.image, window_width + r, window_height + r,
                      window_width + 2*r, window_height + 2*r)  # положить за пределы окна
